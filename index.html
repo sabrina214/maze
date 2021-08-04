@@ -21,25 +21,34 @@
         <fieldset class="coordinate">
           <legend>Start</legend>
           <label for="start-x">X: <span class="start-field"></span></label>
-          <input type="number" class="x-y" id="start-x" min="0" required>
+          <input type="number" class="x-y" id="start-x" min="0" value="0" required>
           <label for="start-y">Y: <span class="start-field"></span></label>
-          <input type="number" class="x-y" id="start-y" min="0" required>
+          <input type="number" class="x-y" id="start-y" min="0" value="0" required>
         </fieldset>
 
         <fieldset class="coordinate">
           <legend>Goal</legend>
           <label for="goal-x">X: <span class="goal-field"></span></label>
-          <input type="number" class="x-y" id="goal-x" min="0" required>
+          <input type="number" class="x-y" id="goal-x" min="0" value="19" required>
           <label for="goal-y">Y: <span class="goal-field"></span></label>
-          <input type="number" class="x-y" id="goal-y" min="0" required>
+          <input type="number" class="x-y" id="goal-y" min="0" value="29" required>
         </fieldset>
         
       </div>
 
       <div class="btn-container">
         <button type="submit" class="btn" id="create">Create</button>
-        <button type="submit" onclick="solveMaze()" class="btn" id="solve" disabled>Solve</button>
+        <button type="submit" class="btn" id="solve" disabled>Solve</button>
       </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-key"><div class="legend-box not-visited"></div><p>Not Visited</p></div>
+      <div class="legend-key"><div class="legend-box visited"></div><p>Visited</p></div>
+      <div class="legend-key"><div class="legend-box explored"></div><p>Explored</p></div>
+      <div class="legend-key"><div class="legend-box path"></div><p>Path</p></div>
+      <div class="legend-key"><div class="legend-box start"></div><p>Start</p></div>
+      <div class="legend-key"><div class="legend-box finish"></div><p>Finish</p></div>
     </div>
 
     <table class="grid">
