@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze</title>
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <div class="maze-input">
+      <div class="slider-container">
+        <label for="row">Row: <span id="row-field">20<span></label>
+        <input type="range" id="row" min="3" value="20">
+        <label for="col">Column: <span id="col-field">30</span></label>
+        <input type="range" id="col" min="3" value="30">
+      </div>
+
+      <div class="coord-container">
+
+        <fieldset class="coordinate">
+          <legend>Start</legend>
+          <label for="start-x">X: <span class="start-field"></span></label>
+          <input type="number" class="x-y" id="start-x" min="0" required>
+          <label for="start-y">Y: <span class="start-field"></span></label>
+          <input type="number" class="x-y" id="start-y" min="0" required>
+        </fieldset>
+
+        <fieldset class="coordinate">
+          <legend>Goal</legend>
+          <label for="goal-x">X: <span class="goal-field"></span></label>
+          <input type="number" class="x-y" id="goal-x" min="0" required>
+          <label for="goal-y">Y: <span class="goal-field"></span></label>
+          <input type="number" class="x-y" id="goal-y" min="0" required>
+        </fieldset>
+        
+      </div>
+
+      <div class="btn-container">
+        <button type="submit" class="btn" id="create">Create</button>
+        <button type="submit" onclick="solveMaze()" class="btn" id="solve" disabled>Solve</button>
+      </div>
+    </div>
+
+    <table class="grid">
+    </table>
+    <script src="app.js"></script>
+</body>
+</html>
