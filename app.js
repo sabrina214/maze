@@ -103,7 +103,7 @@ async function createMaze(numRows, numCols, startCoord) {
             top++
             stack.push(next)
         }
-        await wait(10)
+        // await wait(10)
     }
     document.getElementById(startCoord.x * numCols + startCoord.y).style.backgroundColor = 'rgb(109, 23, 229)'
 }
@@ -164,22 +164,28 @@ solveBtn.addEventListener('click', async () => {
 
     const numRows = parseInt(row.value)
     const numCols = parseInt(col.value)
-
+    
     const startX = parseInt(document.getElementById('start-x').value)
     const startY = parseInt(document.getElementById('start-y').value)
     const goalX = parseInt(document.getElementById('goal-x').value)
     const goalY = parseInt(document.getElementById('goal-y').value)
-
+    
     const startCoord = { x: startX, y: startY }
     const goalCoord = { x: goalX, y: goalY }
+    
+    const option = document.querySelector('.algo-options').value
 
-    await solveMaze(numRows, numCols, startCoord, goalCoord)
+    if (option  === 'dfs') {
+        await solveMazeDFS(numRows, numCols, startCoord, goalCoord)
+    } else {
+        await solveMazeBFS(numRows, numCols, startCoord, goalCoord)
+    }
 
     solveBtn.disabled = false
     createBtn.disabled = false
 })
 
-async function solveMaze(numRows, numCols, startCoord, goalCoord) {
+async function solveMazeDFS(numRows, numCols, startCoord, goalCoord) {
     repaintCells()
 
     let visited = Array(numRows).fill(false).map(() => Array(numCols).fill(false))
@@ -280,4 +286,60 @@ function repaintCells() {
     document.querySelectorAll('td').forEach(cell => {
         cell.style.backgroundColor = 'rgb(255, 217, 223)'
     })
+}
+
+async function solveMazeBFS(numRows, numCols, startCoord, goalCoord) {
+    repaintCells()
+
+    let visited = Array(numRows).fill(false).map(() => Array(numCols).fill(false))
+    visited[startCoord.x][startCoord.y] = true
+
+    let queue = [startCoord]
+
+    let reachedEnd = false
+    let parent = { '0': null }
+
+    while (queue.length) {
+        let curr = queue[0]
+        let currCellId = curr.x * numCols + curr.y
+        let currCell = document.getElementById(currCellId)
+        currCell.style.backgroundColor = 'greenyellow'
+
+        if (JSON.stringify(curr) == JSON.stringify(goalCoord)) {
+            reachedEnd = true
+            break
+        }
+
+        neighbors = getNeighboringCellsForSolving(numRows, numCols, visited, curr, currCell)
+
+        let next = null
+        for (let i = 0; neighbors.length; i++) {
+            let coord = neighbors[i]
+            if (!visited[coord.x][coord.y]) {
+                next = coord
+                visited[next.x][next.y] = true
+
+                let nextCellId = next.x * numCols + next.y
+                nextCell = document.getElementById(nextCellId)
+
+                parent[nextCellId] = currCellId
+                
+                removeBar(curr, next, currCell, nextCell)
+                break
+            }
+        }
+        if (!next) {
+            queue.shift()
+            currCell.style.backgroundColor = 'yellow'
+        } else {
+            queue.push(next)
+        }
+        await wait(10)
+    }
+
+    if (reachedEnd) {
+        document.getElementById(startCoord.x * numCols + startCoord.y).style.backgroundColor = 'rgb(103, 29, 223)'
+        await reconstructPath(parent, goalCoord.x * numCols + goalCoord.y)
+        document.getElementById(goalCoord.x * numCols + goalCoord.y).style.backgroundColor = 'rgb(223, 29, 142)'
+    }
 }
